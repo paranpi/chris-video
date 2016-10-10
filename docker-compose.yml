@@ -1,0 +1,19 @@
+db:
+  image: mysql:5.7
+  volumes:
+    - "./db:/docker-entrypoint-initdb.d"
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: "pianoman00!!"
+  ports:
+    - "3306:3306"
+web:
+  build: .
+  volumes:
+    - "./www:/var/www/html"
+  links:
+    - db
+  ports:
+    - "80:80"
+  restart: always
+
