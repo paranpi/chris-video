@@ -8,16 +8,13 @@
 			</button>		
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li class="active">
-					<a href="#">예능</a>
-				</li>
-				<li>
-					<a href="#about">드라마</a>
-				</li>
-				<li>
-					<a href="#contact">Contact</a>
-				</li>
+			<ul class="nav navbar-nav">				
+				<?php				 
+				foreach($menuList as $key => $value) {
+					echo '<li class="active">';
+					printf('<a href="%s">%s</a>',$value,$key) ;
+					echo '</li>';					
+				}?>							
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>
