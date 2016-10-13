@@ -6,7 +6,10 @@ RUN apt-get update && \
   apt-get -y install mysql-client 
 
 COPY www /var/www/html
-RUN chown -R www-data:www-data /var/www/html
+COPY Drama/ /var/www/Drama
+COPY Fun/ /var/www/Fun
+
+RUN chown -R www-data:www-data /var/www
 RUN usermod -u 1000 www-data
 RUN usermod -G staff www-data
 EXPOSE 80
