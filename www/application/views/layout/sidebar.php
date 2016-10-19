@@ -3,7 +3,7 @@
 		<?php				 
 		foreach($sidebar_menu_list as $value) {
 			echo '<li>';
-			printf('<a href="#">%s</a>',$value);
+			printf('<a href="/%s?menu=%s">%s</a>',$page,$value,$value);
 			echo '</li>';					
 		}?>		
 	</ul>	

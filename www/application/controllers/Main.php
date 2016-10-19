@@ -1,5 +1,5 @@
 <?php
-class Main extends CI_Controller {
+class Main extends CI_Controller {	  
 	private function get_menu_list() {
 		
 		//TODO: you have to read from db
@@ -45,13 +45,18 @@ class Main extends CI_Controller {
 		return $mp4_files;		
 	}
 	
-	public function index(){				
+	public function index($page="Fun"){
+		$this->load->helper('url');										
 		$data = array();
 		$data['menu_list'] = $this->get_menu_list();
-		$data['sidebar_menu_list'] = $this->get_sidebar_menu_list();	
-		$file_dir = array_values($data['sidebar_menu_list']);		
-		$data['file_list'] = $this->get_mp4_files('Fun',$file_dir[0]);			
-		$this->load->helper('url');									
+		$data['sidebar_menu_list'] = $this->get_sidebar_menu_list($page);
+		$data['page'] = $page;			
+		$menu = $this->input->get('menu', TRUE);
+		if(!$menu) {
+			$file_dir = array_values($data['sidebar_menu_list']);
+			$menu = $file_dir[0]; 
+		}		
+		$data['file_list'] = $this->get_mp4_files($page,$menu);																			
 		$this->load->view('main',$data);							
 	}
 }
