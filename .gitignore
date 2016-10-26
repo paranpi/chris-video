@@ -1,1 +1,3 @@
-www/application/logs/
+www/apache/video-stream/application/logs/
+www/apache/video-stream/system/sessions/
+

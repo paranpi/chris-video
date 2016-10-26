@@ -11,11 +11,17 @@
 			<ul class="nav navbar-nav">				
 				<?php				 
 				foreach($menu_list as $key => $value) {
-					echo '<li class="active">';
+					if($value == $page) {
+						echo '<li class="active">';
+					}else {
+						echo '<li>';
+					}
+					
 					printf('<a href="%s">%s</a>',$value,$key) ;
 					echo '</li>';					
-				}?>							
+				}?>										
 			</ul>
+			<div class="nav-login"><a href="">로그인</a></div>						
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>

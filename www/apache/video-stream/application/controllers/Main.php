@@ -52,7 +52,8 @@ class Main extends CI_Controller {
 		if(!$menu) {
 			$file_dir = array_values($data['sidebar_menu_list']);
 			$menu = $file_dir[0]; 
-		}		
+		}
+		$data['menu'] = $menu;
 		$data['file_list'] = $this->get_mp4_files($page,$menu);																			
 		$this->load->view('main',$data);							
 	}

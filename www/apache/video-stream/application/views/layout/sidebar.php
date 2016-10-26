@@ -8,7 +8,12 @@
 		</li>
 		<?php				 
 		foreach($sidebar_menu_list as $value) {
-			echo '<li>';
+			if($menu == $value) {
+				echo '<li class="active">';
+			}else {
+				echo '<li>';
+			}
+			
 			printf('<a href="%s?menu=%s">%s</a>',$page,$value,$value);
 			echo '</li>';					
 		}?>		
