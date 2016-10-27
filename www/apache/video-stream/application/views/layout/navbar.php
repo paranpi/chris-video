@@ -21,7 +21,7 @@
 					echo '</li>';					
 				}?>										
 			</ul>
-			<div class="nav-login"><a href="">로그인</a></div>						
+			<div class="nav navbar-nav nav-login"><li><a href="login">로그인</a></li></div>						
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>
