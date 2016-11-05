@@ -14,7 +14,7 @@ body {
  * Sidebar
  */
 
-/* Hide for mobile, show later */
+/* for mobile*/
 .sidebar {	
 	position: fixed;
 	top: 51px;
@@ -46,7 +46,12 @@ body {
 		width: 84%;
 		height: 100%;
 	}
-}
+	/*Nav*/
+	.nav-login {
+		position: absolute;
+		right:0px;
+	}
+}	
 
 /* Sidebar navigation */
 .sidebar-open {
@@ -78,7 +83,7 @@ body {
 /*Nav*/
 .nav-login {
 	position: absolute;
-	right:0px;
+	left:0px;
 }
 
 /*Login*/

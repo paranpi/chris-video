@@ -4,7 +4,7 @@ db:
     - "./db:/docker-entrypoint-initdb.d"
   restart: always
   environment:
-    MYSQL_ROOT_PASSWORD: "pianoman00!!"
+    MYSQL_ROOT_PASSWORD: "chris-video-streaming"
   ports:
     - "3306:3306"
 web:

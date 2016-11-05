@@ -6,6 +6,7 @@ RUN apt-get update && \
   apt-get -y install mysql-client 
 
 RUN echo "alias /content /var/www" >> /etc/apache2/conf-available/docker-php.conf
+RUN docker-php-ext-install mysqli
 RUN a2enmod rewrite 
 RUN chown -R www-data:www-data /var/www
 RUN usermod -u 1000 www-data

@@ -19,9 +19,18 @@
 					
 					printf('<a href="%s">%s</a>',$value,$key) ;
 					echo '</li>';					
-				}?>										
-			</ul>
-			<div class="nav navbar-nav nav-login"><li><a href="login">로그인</a></li></div>						
+				}
+				if(!isset($this->session->userdata['logged_in'])) {
+					echo '<li><a href="login">관리</a></li>';	
+				}else {
+					echo '<li><a href="logout">로그아웃</a></li>';
+				}
+				?>
+				
+										
+			
+				
+			</ul>						
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>

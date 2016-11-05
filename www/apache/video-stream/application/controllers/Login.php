@@ -13,29 +13,61 @@ class Login extends CI_Controller
         $this->load->library('form_validation');
 
         // Load database
-        //$this->load->model('login_database');
+        $this->load->model('user_model');
+
+        // Load url
+        $this->load->helper('url');
     }
 
-    public function index($page = "Fun")
+    public function index()
     {
         // Show login page
         $this->load->view('login_form');
     }
 
-    public function register_user()
-    {
+    public function registration_form()
+    {        
         $this->load->view('registration_form');
     }
 
-    public function create_new_user()
-    {        
-        $this->form_validation->set_rules('id', 'Email', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('checkPassword', 'Password', 'trim|required|xss_clean');
-        if ($this->form_validation->run() == false) {
-            $this->load->view('registration_form');
+    public function registration()
+    {
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|min_length[6]|max_length[128]|valid_email');
+        $this->form_validation->set_rules('password', 'Password|', 'trim|required|xss_clean|min_length[8]|max_length[20]');
+        $this->form_validation->set_rules('checkPassword', 'Password', 'trim|required|xss_clean|min_length[8]|max_length[20]|matches[password]');
+        if ($this->form_validation->run() == false) {            
+            $this->load->view('registration_form');        
         } else {
-        	echo "<div>new_user</div>";
+            $data = array(
+                'email'    => $this->input->post('email'),
+                'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+            );
+            $this->user_model->insert($data);            
+            redirect('login');
         }
+    }
+
+    public function authentication()
+    {        
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|min_length[6]|max_length[128]');
+        $this->form_validation->set_rules('password', 'Password|', 'trim|required|xss_clean|min_length[8]|max_length[20]');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('login_form');            
+        } else {
+            $user = $this->user_model->get(array("email"=>$this->input->post('email')));                        
+            if(isset($user) && password_verify($this->input->post('password'),$user->PASSWORD)) 
+            {
+                $this->session->set_userdata('logged_in', true);
+                //TODO : redirect to admin page.
+                redirect('/admin');
+            }else {
+                $this->load->view('login_form');
+            }
+            
+        }
+    }
+    public function logout() {
+        $this->session->unset_userdata('logged_in');
+        redirect('/');
     }
 }
