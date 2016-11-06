@@ -51,7 +51,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'main';
 $route['admin/menu']['post'] = 'admin/add_menu';
+$route['admin/menu/(:num)']['put'] = 'admin/update_menu/$1';
 $route['admin/menu/(:num)']['delete'] = 'admin/del_menu/$1';
+$route['admin/files']['post'] = 'admin/browse_files';
 $route['admin'] = 'admin/index';
 $route['login']['get'] = 'login';
 $route['login']['post'] = 'login/authentication';

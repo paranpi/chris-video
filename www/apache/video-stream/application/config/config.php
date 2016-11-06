@@ -517,4 +517,4 @@ $config['proxy_ips'] = '';
 | Custom Config
 |-------------------------------------------------------------------------- 
  */
- $config['content_base_path'] = '../../../';
+ $config['content_base_path'] = '../../..';
