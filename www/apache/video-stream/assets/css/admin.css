@@ -1,0 +1,59 @@
+table {
+	width: 100%;
+	white-space: nowrap;
+	font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.top-menu {
+	max-height:430px;
+	overflow-x: scroll;
+}
+.top-menu table {
+	table-layout: fixed;
+}
+.top-menu .input-menu {
+	padding: 5px 0px 5px 0px;
+	background: #000000;
+}
+.top-menu .input-menu #menu-value{
+	width:80%;
+	margin:0 7px;
+}
+.top-menu td {
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+.top-menu .row-id {
+	width:10%;
+}
+.top-menu .row-name {
+	width:60%;
+}
+.top-menu .row-display {
+	width:15%;
+}
+.top-menu .row-delete {
+	width:15%;
+}
+.top-menu .menu-name input {
+	width:100%;
+}
+.hidden {
+	display: none;
+}
+.file-browser {
+	max-height: 500px;
+}
+.file-browser table tr td.file-name {
+	cursor: pointer;    
+}
+.file-browser tr:nth-child(even) {
+    background-color: #dddddd;
+}
