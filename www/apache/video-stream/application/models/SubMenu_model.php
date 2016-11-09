@@ -19,22 +19,16 @@ class SubMenu_model extends CI_Model
     }   
     
     public function gets($options = array()) {
-        $this->db->select('id, name , publish');
-        $this->db->order_by('created','DESC');
-        if(isset($options['publish'])) {
-            $this->db->where('publish',$options['publish']);
-        }
-        $query = $this->db->get('menu');
+        
+        $query = $this->db->query('SELECT menu.id, menu.name, publish, sub_menu.id as sub_menu_id, sub_menu.name as sub_menu_name FROM sub_menu right join menu on menu.id = sub_menu.menu_id');
+                
         return $query->result_array();
     }
 
     public function delete($options) 
     {               
         log_message('debug','delete : '.print_r($options,TRUE));
-        $query = $this->db->delete('menu', array('id' => $options['id']));
-        if($this->db->affected_rows() < 1) {
-            return false;
-        }
-        return true;
+        $query = $this->db->delete('sub_menu', array('id' => $options['id']));
+        return $query;
     }
 }

@@ -21,6 +21,30 @@ class Admin extends CI_Controller
         $this->load->model('subMenu_model');
     }
 
+    private function make_menu_array($menu_list = array()) {
+        $menus = array();
+
+        foreach ($menu_list as $item) {            
+            if(!isset($menus[$item['id']])) {
+                $menus[$item['id']] = array(
+                    "id"=>$item['id'],
+                    "name"=>$item['name'],
+                    "publish"=>$item['publish'],
+                    "sub_menus"=>array()
+                    );                
+            }
+            if($item['sub_menu_id']) {
+                $sub_menu_list = array(
+                "id"=>$item['sub_menu_id'],
+                "name"=>$item['sub_menu_name']
+                );            
+                array_push($menus[$item['id']]['sub_menus'],$sub_menu_list);
+            }
+        }
+        log_message('debug','menus : '.print_r($menus,TRUE));
+        return $menus;
+    }
+
     private function get_files($dir="") {
         if(!$dir) {
             $dir = $this->config->item('content_base_path');
@@ -48,12 +72,13 @@ class Admin extends CI_Controller
     public function index()
     {
         // Show login page
-        $menus = $this->menu_model->gets();
-        $file_name=$this->input->get('dir');
-        log_message('debug','menus : '.print_r($menus,TRUE));
+        //$menus = $this->menu_model->gets();
+        $menus = $this->subMenu_model->gets();
+        $file_name=$this->input->get('dir');        
         log_message('debug','file_name : '.print_r($file_name,TRUE));
         $data = array();
-        $data['menus'] = $menus;
+        $data['menus'] = $this->make_menu_array($menus);
+        //$data['menus'] = $menus;
         $base_path = realpath($this->config->item('content_base_path'));
         $file_path = realpath($base_path.'/'.$file_name);
         if(strlen($file_path) < strlen($base_path)) {
@@ -79,7 +104,7 @@ class Admin extends CI_Controller
         $result = $this->menu_model->insert($data);
         
         if($result) {            
-            $this->response(true,array("success_url"=>"admin"));
+            $this->response(true);
         }else {
             $this->response(false,json_encode($this->db->error()));
         }
@@ -90,7 +115,7 @@ class Admin extends CI_Controller
         log_message('debug','put : '.print_r($put_data,TRUE));        
         $result = $this->menu_model->update(array("id"=>$id,"data"=>$put_data));                  
         if($result) {            
-            $this->response(true,array("success_url"=>"admin"));
+            $this->response(true);
         }else {
             $this->response(false,json_encode($this->db->error()));
         }        
@@ -100,7 +125,7 @@ class Admin extends CI_Controller
     public function del_menu($id) {
         $result = $this->menu_model->delete(array("id"=>$id));
         if($result) {            
-            $this->response(true,array("success_url"=>"admin"));
+            $this->response(true);
         }else {
             $this->response(false,json_encode($this->db->error()));
         }
@@ -120,5 +145,15 @@ class Admin extends CI_Controller
         }else {
             $this->response(false,json_encode($this->db->error()));
         }
+    }
+
+    public function del_sub_menu($id) {
+        $result = $this->subMenu_model->delete(array("id"=>$id));
+        if($result) {            
+            $this->response(true);
+        }else {
+            $this->response(false,json_encode($this->db->error()));
+        }
+        
     }
 }

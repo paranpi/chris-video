@@ -54,6 +54,7 @@ $route['admin/menu']['post'] = 'admin/add_menu';
 $route['admin/menu/(:num)']['put'] = 'admin/update_menu/$1';
 $route['admin/menu/(:num)']['delete'] = 'admin/del_menu/$1';
 $route['admin/submenu']['post'] = 'admin/add_sub_menu';
+$route['admin/submenu/(:num)']['delete'] = 'admin/del_sub_menu/$1';
 $route['admin'] = 'admin/index';
 $route['login']['get'] = 'login';
 $route['login']['post'] = 'login/authentication';
