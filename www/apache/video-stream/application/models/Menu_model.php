@@ -47,14 +47,20 @@ class Menu_model extends CI_Model
         return $query->row();     
     }
 
-    public function gets($options = array()) {
+    public function gets($options = array()) {        
         $this->db->select('id, name , publish');
-        $this->db->order_by('created','DESC');
+        //$this->db->order_by('created','DESC');
         if(isset($options['publish'])) {
             $this->db->where('publish',$options['publish']);
         }
         $query = $this->db->get('menu');
         return $query->result_array();
+    }
+
+    public function getMenusWithSubmenu($options = array()) {
+        $query = $this->db->query('SELECT menu.id, menu.name, menu.publish, sub_menu.id AS sub_menu_id, sub_menu.name AS sub_menu_name FROM menu LEFT JOIN sub_menu ON menu.id = sub_menu.menu_id');
+                
+        return $query->result_array();        
     }
 
     public function delete($options) 

@@ -3,7 +3,7 @@
 		var input = document.getElementById('menu-value');
 		var data = {
 			name:input.value,
-			publish:false
+			publish:true
 		}
 		httpUtil.post({url:"admin/menu",data:data},function (err,response) {
 			if(err) {			

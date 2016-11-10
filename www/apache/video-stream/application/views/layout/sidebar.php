@@ -6,17 +6,11 @@
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</li>
-		<?php				 
-		foreach($sidebar_menu_list as $value) {
-			if($menu == $value) {
-				echo '<li class="active">';
-			}else {
-				echo '<li>';
-			}
-			
-			printf('<a href="%s?menu=%s">%s</a>',$page,$value,$value);
-			echo '</li>';					
-		}?>		
+		<?php foreach($sidebar_menu_list as $sub_menu) { ?>
+		<li class="<?php echo $sub_menu_id == $sub_menu['id'] ? "active":"" ?>">
+		<a href="?menu=<?php echo $sub_menu['id']?>"><?php echo $sub_menu['name']?></a>
+		</li>			
+		<?php }?>		
 	</ul>	
 </div>
 <script>

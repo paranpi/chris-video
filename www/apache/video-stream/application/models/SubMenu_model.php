@@ -17,11 +17,11 @@ class SubMenu_model extends CI_Model
         $this->db->set('created', 'NOW()', false); 
         return $this->db->insert('sub_menu');        
     }   
-    
-    public function gets($options = array()) {
         
-        $query = $this->db->query('SELECT menu.id, menu.name, publish, sub_menu.id as sub_menu_id, sub_menu.name as sub_menu_name FROM sub_menu right join menu on menu.id = sub_menu.menu_id');
-                
+    public function gets($options = array()) {
+        $this->db->select('id, name,path');        
+        $this->db->where('menu_id',$options['menu_id']);
+        $query = $this->db->get('sub_menu');
         return $query->result_array();
     }
 

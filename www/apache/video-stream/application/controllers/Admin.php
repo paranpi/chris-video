@@ -72,8 +72,8 @@ class Admin extends CI_Controller
     public function index()
     {
         // Show login page
-        //$menus = $this->menu_model->gets();
-        $menus = $this->subMenu_model->gets();
+        $menus = $this->menu_model->getMenusWithSubmenu();
+        //$menus = $this->subMenu_model->getAll();
         $file_name=$this->input->get('dir');        
         log_message('debug','file_name : '.print_r($file_name,TRUE));
         $data = array();

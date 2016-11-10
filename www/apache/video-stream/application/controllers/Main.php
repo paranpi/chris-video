@@ -1,60 +1,70 @@
 <?php
-class Main extends CI_Controller {	  
-	private function get_menu_list() {
-		
-		//TODO: you have to read from db
-		$menu_list = array(
-		"예능" => "Fun",
-		"드라마" => "Drama",
-		"영화" => "Movie",
-		"다큐" => "Documentary"
-		);
-		return $menu_list;
+class Main extends CI_Controller {
+	public function __construct()
+    {
+        parent::__construct();
+        // Load database
+        $this->load->model('menu_model');
+        $this->load->model('subMenu_model');
+    }	  
+	
+	private function get_sub_menu($id="",$sub_menus) {
+		if(!$sub_menus) {
+			return;
+		}
+
+		if(!$id) {
+			return $sub_menus[0];
+		}
+		foreach ($sub_menus as $key => $value) {
+			if($value['id'] == $id) {
+				return $value;
+			}
+		}
+		return $sub_menus[0];
 	}
-	private function get_sidebar_menu_list($dirname = "Fun") {
-		 function filter ($var) {
-			return substr($var, 0,1) != ".";			
-		 }				
-		//TODO: you have to read from db
-		
+
+	private function get_mp4_files($dirname) {
 		$base_path = $this->config->item('content_base_path');		
-		$files=array_filter(scandir($base_path.$dirname),'filter');
-		log_message('debug','menu_list : '.print_r($files,TRUE));
-		return $files; 											
-	}
-	private function get_mp4_files($top_dir,$sub_dir) {
-		$base_path = $this->config->item('content_base_path');
 		$mp4_files = array();
-		$dirname = $top_dir.'/'.$sub_dir;
-		if ($handle = opendir($base_path.$dirname)) {
-			while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != "..") {
-					$fileinfo = pathinfo($file);
-					$ext = $fileinfo['extension'];
-					if($ext == "mp4") {
-						$encoded_dirname = urlencode($top_dir).'/'.urlencode($sub_dir).'/'.rawurlencode($file);
-						array_push($mp4_files,array("url" => $encoded_dirname,"name" => $file));
-					}
+		log_message('debug','scandir : '.print_r($base_path.$dirname,TRUE));
+		$files = scandir($base_path.$dirname);
+		foreach ($files as $file) {
+			if ($file != "." && $file != "..") {
+				$fileinfo = pathinfo($file);				
+				if(isset($fileinfo['extension']) && $fileinfo['extension'] == "mp4") {
+					$encoded_dirname = $dirname.'/'.rawurlencode($file);
+					array_push($mp4_files,array("url" => $encoded_dirname,"name" => $file));
 				}
 			}
-			closedir($handle);
-		}
+		}				
 		log_message('debug','$files : '.print_r($mp4_files,TRUE));
 		return $mp4_files;		
 	}
 	
-	public function index($page="Fun"){										
+	public function index($id=""){										
 		$data = array();
-		$data['menu_list'] = $this->get_menu_list();
-		$data['sidebar_menu_list'] = $this->get_sidebar_menu_list($page);
-		$data['page'] = $page;			
-		$menu = $this->input->get('menu', TRUE);
-		if(!$menu) {
-			$file_dir = array_values($data['sidebar_menu_list']);
-			$menu = $file_dir[0]; 
+		$data['menu_list'] = $this->menu_model->gets(array("publish"=>true));
+		log_message('debug','$menu_list : '.print_r($data['menu_list'],TRUE));
+		
+		if(!$id) {
+			$id = $data['menu_list'][0]['id'];
 		}
-		$data['menu'] = $menu;
-		$data['file_list'] = $this->get_mp4_files($page,$menu);																			
+		$data['id'] = $id;		
+		$data['sidebar_menu_list'] = $this->subMenu_model->gets(array("menu_id"=>$id));
+		$sub_menu_id = $this->input->get('menu', TRUE);
+		$sub_menu = $this->get_sub_menu($sub_menu_id,$data['sidebar_menu_list']);
+		if(!$sub_menu_id) {			
+			$sub_menu_id = $sub_menu['id'];
+		}			
+		$data['sub_menu_id'] = $sub_menu_id;
+		log_message('debug','sub_menu : '.print_r($sub_menu,TRUE));
+		if($sub_menu) {
+			$data['file_list'] = $this->get_mp4_files($sub_menu['path']);	
+		}else {
+			$data['file_list'] = array();
+		}
+											
 		$this->load->view('main',$data);							
 	}
 }
