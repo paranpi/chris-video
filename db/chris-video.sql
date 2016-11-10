@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 
 CREATE TABLE IF NOT EXISTS `sub_menu` (
 `id` int(25) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(255) NOT NULL UNIQUE KEY,
+  `name` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL UNIQUE KEY,
   `menu_id` int(25) NOT NULL,
   `created` datetime NOT NULL,

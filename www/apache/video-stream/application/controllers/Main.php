@@ -3,7 +3,9 @@ class Main extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        // Load database
+        // Load TextHelper
+        $this->load->helper('text');
+        // Load database        
         $this->load->model('menu_model');
         $this->load->model('subMenu_model');
     }	  

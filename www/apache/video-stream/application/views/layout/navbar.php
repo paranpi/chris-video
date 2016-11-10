@@ -16,7 +16,7 @@
 				<?php }?>
 
 				<?php if(!isset($this->session->userdata['logged_in'])) {?>
-					<li><a href="login">관리</a></li>				
+					<li><a href="login">설정</a></li>				
 				<?php } else { ?>
 					<li><a href="logout">로그아웃</a></li>
 				<?php } ?>

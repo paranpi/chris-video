@@ -86,6 +86,9 @@ body {
 	left:0px;
 }
 
+.video-title {
+	height: 40px;
+}
 /*Login*/
 .form-signup,
 .form-signin {
