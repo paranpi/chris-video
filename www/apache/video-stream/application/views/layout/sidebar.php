@@ -15,7 +15,7 @@
 </div>
 <script>
 function openSideBar() {
-    document.getElementById("sidebar").style.left = "0%";
+    document.getElementById("sidebar").style.left = "0px";
 }
 
 function closeSideBar() {

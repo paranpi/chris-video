@@ -2,7 +2,7 @@
 	<div class="row">
 		<?php foreach($file_list as $value) { ?>
 			<div class="col-md-4">
-				<video class="video-js vjs-default-skin vjs-16-9" controls data-setup="{}">
+				<video class="video-js vjs-default-skin vjs-16-9" controls preload="none" data-setup="{}">
 					<source src="/content/<?php echo $value["url"]?>" type="video/mp4">
 					<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that 
 						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -13,4 +13,3 @@
 		<?php } ?>			
 	</div>
 </div><!-- /.container -->
-</div>
