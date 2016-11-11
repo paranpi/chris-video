@@ -107,11 +107,11 @@
 		});
 	}
 
-	function addDownloadList(id,filename) {
-		if(!id) {
-			return;
+	function addDownloadList(path,filename,board) {
+		if(!path || !filename || !board) {
+			return alert("입력 값을 확인하세요.");
 		}
-		httpUtil.post({url:"admin/downloadList",data:{id:id,filename:filename}},function (err){
+		httpUtil.post({url:"admin/downloadList",data:{path:path,filename:filename,board:board}},function (err){
 			if(err) {			
 				alert(JSON.stringify(err));
 				return;
@@ -119,11 +119,11 @@
 		});
 	}
 
-	function delDownloadList(id) {
-		if(!id) {
+	function delDownloadList(path) {
+		if(!path) {
 			return;
 		}
-		httpUtil.del({url:"admin/downloadList/"+id},function (err){
+		httpUtil.del({url:"admin/downloadList?path="+path},function (err){
 			if(err) {			
 				alert(JSON.stringify(err));
 				return;
@@ -134,12 +134,14 @@
 	this.changeDownloadState = function(checkbox) {
 		var td = checkbox.parentElement;
 		var tr = td.parentElement;
-		var id = tr.getElementsByClassName('sub-menu-id')[0].textContent;
+		var path = tr.getAttribute('data-path');
+		var select = tr.getElementsByClassName("board")[0];
+		var board = select.options[select.selectedIndex].value;
 		var filename = tr.getElementsByClassName("download-filename")[0].value;
 		if(checkbox.checked) {
-			addDownloadList(id,filename);
+			addDownloadList(path,filename,board);
 		}else {
-			delDownloadList(id);
+			delDownloadList(path);
 		}		
 	}
 })()

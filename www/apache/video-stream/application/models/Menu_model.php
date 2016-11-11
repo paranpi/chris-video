@@ -58,7 +58,7 @@ class Menu_model extends CI_Model
     }
 
     public function getMenusWithSubmenu($options = array()) {
-        $query = $this->db->query('SELECT menu.id, menu.name, menu.publish, sub_menu.id AS sub_menu_id, sub_menu.name AS sub_menu_name, download_list.filename AS filename  FROM menu LEFT JOIN sub_menu ON menu.id = sub_menu.menu_id LEFT JOIN download_list ON sub_menu.path = download_list.path');
+        $query = $this->db->query('SELECT menu.id, menu.name, menu.publish, sub_menu.id AS sub_menu_id, sub_menu.name AS sub_menu_name, sub_menu.path AS sub_menu_path, download_list.filename AS filename ,download_list.board AS board FROM menu LEFT JOIN sub_menu ON menu.id = sub_menu.menu_id LEFT JOIN download_list ON sub_menu.path = download_list.path');
                 
         return $query->result_array();        
     }
