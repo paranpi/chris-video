@@ -38,7 +38,9 @@ class Admin extends CI_Controller
                 $sub_menu_list = array(
                 "id"=>$item['sub_menu_id'],
                 "name"=>$item['sub_menu_name'],
-                "filename"=>$item['filename']
+                "path"=>$item['sub_menu_path'],
+                "filename"=>$item['filename'],
+                "board"=>$item['board'],
                 );            
                 array_push($menus[$item['id']]['sub_menus'],$sub_menu_list);
             }
@@ -163,17 +165,12 @@ class Admin extends CI_Controller
         $_POST += json_decode(file_get_contents('php://input'), true);                
         log_message('debug','post : '.print_r($this->input->post(),TRUE));
         $filename = $this->input->post('filename');
-        $id = $this->input->post('id');
-        $path = null;
-        if($id) {
-            $results = $this->subMenu_model->get(array("id"=>$id));
-            if($results) {
-                $path = $results[0]->path;
-            }                       
-        }else {
-            $path = $this->input->post('path');
+        $path = $this->input->post('path');
+        $board = $this->input->post('board');
+        if(!$path || !$filename || !$board) {
+            return $this->response(true,"입력값을 확인하세요.");
         }
-        $data = array('filename'=>$filename,'path'=>$path);
+        $data = array('filename'=>$filename,'path'=>$path,'board'=>$board);
         $result = $this->downloadList_model->insert($data);
         if($result) {            
             $this->response(true);
@@ -182,17 +179,8 @@ class Admin extends CI_Controller
         }
     }
 
-    public function del_download_list($sub_menu_id="") {
-        if(!$sub_menu_id) {
-            return $this->response(false,"invalid sub_menu_id!!");
-        }
-        $results = $this->subMenu_model->get(array("id"=>$sub_menu_id));
-        if($results) {
-            $path = $results[0]->path;
-        }else {
-            return $this->response(false,"does not exists sub_menu");
-        }
-                
+    public function del_download_list() {
+        $path = $this->input->get('path');  
         $result = $this->downloadList_model->delete(array("path"=>$path));
         if($result) {            
             $this->response(true);

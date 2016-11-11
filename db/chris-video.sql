@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `sub_menu` (
 
 CREATE TABLE IF NOT EXISTS `download_list` (
   `path` varchar(255) NOT NULL UNIQUE KEY PRIMARY KEY,
-  `filename` varchar(255) NOT NULL UNIQUE KEY,  
+  `filename` varchar(255) NOT NULL UNIQUE KEY,
+  `board` varchar(255) NOT NULL,
   `created` datetime NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
