@@ -63,6 +63,29 @@ CREATE TABLE IF NOT EXISTS `sub_menu` (
   FOREIGN KEY (`menu_id`) REFERENCES `menu`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `download_list`
+--
+
+CREATE TABLE IF NOT EXISTS `download_list` (
+  `path` varchar(255) NOT NULL UNIQUE KEY PRIMARY KEY,
+  `filename` varchar(255) NOT NULL UNIQUE KEY,  
+  `created` datetime NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `downloaded`
+--
+
+CREATE TABLE IF NOT EXISTS `downloaded` (
+  `margnet`  varchar(255) NOT NULL UNIQUE KEY,
+  `created` datetime NOT NULL  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Crate user
 --

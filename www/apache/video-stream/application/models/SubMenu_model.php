@@ -17,7 +17,15 @@ class SubMenu_model extends CI_Model
         $this->db->set('created', 'NOW()', false); 
         return $this->db->insert('sub_menu');        
     }   
-        
+    
+    public function get($options = array()) {
+        $this->db->select('id, name,path');        
+        $this->db->where('id',$options['id']);
+        $this->db->limit(1);
+        $query = $this->db->get('sub_menu');
+        return $query->result();
+    }
+
     public function gets($options = array()) {
         $this->db->select('id, name,path');        
         $this->db->where('menu_id',$options['menu_id']);

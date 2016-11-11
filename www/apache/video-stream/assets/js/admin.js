@@ -74,8 +74,7 @@
 		});		
 	}
 	
-	this.insertSubMenu = function (buttonElement) {
-		//TODO: get menuid,name;
+	this.insertSubMenu = function (buttonElement) {		
 		var path = document.getElementById("cur-path").textContent;
 		var td = buttonElement.parentElement;
 		var tr = td.parentElement;		
@@ -108,4 +107,39 @@
 		});
 	}
 
+	function addDownloadList(id,filename) {
+		if(!id) {
+			return;
+		}
+		httpUtil.post({url:"admin/downloadList",data:{id:id,filename:filename}},function (err){
+			if(err) {			
+				alert(JSON.stringify(err));
+				return;
+			}			
+		});
+	}
+
+	function delDownloadList(id) {
+		if(!id) {
+			return;
+		}
+		httpUtil.del({url:"admin/downloadList/"+id},function (err){
+			if(err) {			
+				alert(JSON.stringify(err));
+				return;
+			}			
+		});
+	}
+
+	this.changeDownloadState = function(checkbox) {
+		var td = checkbox.parentElement;
+		var tr = td.parentElement;
+		var id = tr.getElementsByClassName('sub-menu-id')[0].textContent;
+		var filename = tr.getElementsByClassName("download-filename")[0].value;
+		if(checkbox.checked) {
+			addDownloadList(id,filename);
+		}else {
+			delDownloadList(id);
+		}		
+	}
 })()

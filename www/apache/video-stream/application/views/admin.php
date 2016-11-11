@@ -29,7 +29,7 @@
 			</table>
 		</div>	
 		<div class="top-menu">
-			<h2>상단메뉴</h2>
+			<h2>메뉴</h2>
 			<div class="input-menu">
 			<input type="text" id="menu-value"> <button id="menu-add" onclick="addMenu()">추가</button>
 			</div>
