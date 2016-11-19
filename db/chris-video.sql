@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `download_list` (
 --
 
 CREATE TABLE IF NOT EXISTS `downloaded` (
-  `margnet`  varchar(255) NOT NULL UNIQUE KEY,
+  `filename`  varchar(255) NOT NULL UNIQUE KEY,
   `created` datetime NOT NULL  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
