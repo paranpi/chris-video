@@ -55,7 +55,7 @@ class Login extends CI_Controller
             $this->load->view('login_form');            
         } else {
             $user = $this->user_model->get(array("email"=>$this->input->post('email')));                        
-            if(isset($user) && password_verify($this->input->post('password'),$user->PASSWORD)) 
+            if(isset($user) && password_verify($this->input->post('password'),$user->password)) 
             {
                 $this->session->set_userdata('logged_in', true);
                 //TODO : redirect to admin page.

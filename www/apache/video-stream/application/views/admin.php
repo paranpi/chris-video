@@ -8,9 +8,10 @@
 	</head>
 	<body>
 		<div><a href="<?php echo base_url()?>admin/">HOME</a></div>
+		<div><a href="<?php echo base_url()?>logout/">LOGOUT</a></div>
 		<div id="browser-root" class="file-browser">
 			<h2>파일브라우저</h2>
-			<div id="cur-path"><?php echo $path;?></div>
+			<div id="cur-path"><?php echo $path?></div>
 			<table>
 				<thead>
 					<tr>

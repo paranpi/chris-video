@@ -13,7 +13,8 @@ class Downloader extends CI_Controller
     private function getFeedItem($filename , $board) {
         //nas 에서 https 요청시 멈춰버리는현상발생. URL변경함.
         //$url = "https://torrentkim5.net/bbs/rss.php?k=" . $filename . "&b=" . $board;
-        $url = "http://rss.iroot.kr/rss2.php?k=".$filename."&b=".$board;        
+        $url = "http://rss.iroot.kr/rss2.php?k=".$filename."&b=".$board;
+        log_message("debug","rss url : ".$url);
         $content = file_get_contents($url);
         $xml = simplexml_load_string($content);        
         $item = $xml->channel->item[0];
@@ -36,8 +37,10 @@ class Downloader extends CI_Controller
         log_message("debug","delete_list : ".print_r($delete_list,TRUE));
         $now = time();        
         foreach ($delete_list as $key => $value) {
-            if(is_file($value) && filemtime($value) > 60 * 60* 24 * 30) {
-                unlink($value);
+            $file = $path."/".$value;
+            if(is_file($file) && filemtime($file) < $now - (60 * 60* 24 * 30)) {
+                log_message("debug","delete file : ".$file);
+                unlink($file);
             }            
         }
     }
@@ -54,9 +57,15 @@ class Downloader extends CI_Controller
             log_message('debug','item : '.print_r($item->link,TRUE));
             $path = realpath($this->config->item('content_base_path').'/'.$value['path']);
             if(!$this->isDownloaded($item->title)) {                 
-                $cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -a \'%s\' -w %s',$item->link[0],$path);                
-                exec($cmd);
-                log_message("debug","start cmd : ".$cmd);
+                $start_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -a \'%s\'',$item->link[0]);                
+                exec($start_cmd);
+                log_message("debug","start cmd : ".$start_cmd);
+                $tid_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -l | grep \'%s\' | awk \'{print $1}\'',$value['filename']);
+                $tid = exec($tid_cmd);
+                log_message("debug","get tid cmd : ".$tid_cmd);
+                $move_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -t %s --move %s',$tid,$path);
+                log_message("debug","move cmd : ".$move_cmd);
+                exec($move_cmd);
                 $this->downloaded_model->insert(array("filename"=>$item->title[0]));
             }
 

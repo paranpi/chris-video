@@ -17,6 +17,9 @@ class Admin extends CI_Controller
         // Load url
         //$this->load->helper('url');
         // Load database
+        /*if(!isset($this->session->userdata['logged_in'])) {
+            return redirect('/login');
+        }*/
         $this->load->model('menu_model');
         $this->load->model('subMenu_model');
         $this->load->model('downloadList_model');
@@ -77,24 +80,25 @@ class Admin extends CI_Controller
     {
         // Show login page
         $menus = $this->menu_model->getMenusWithSubmenu();
-        //$menus = $this->subMenu_model->getAll();
-        $file_name=$this->input->get('dir');        
-        log_message('debug','file_name : '.print_r($file_name,TRUE));
+        //$menus = $this->subMenu_model->getAll();            
         $data = array();
         $data['menus'] = $this->make_menu_array($menus);
         //$data['menus'] = $menus;
-        $base_path = realpath($this->config->item('content_base_path'));
-        $file_path = realpath($base_path.'/'.$file_name);
-        if(strlen($file_path) < strlen($base_path)) {
-            $file_path = $base_path;
+        $base_path = realpath($this->config->item('content_base_path'));        
+        log_message('debug','base_path : '.print_r($base_path,TRUE));
+        $dir_name=$this->input->get('dir');
+        if(!$dir_name) {
+            $dir_name = $base_path;
+        }else {
+            $dir_name = realpath($dir_name);
+        }
+        log_message('debug','dir_name : '.print_r($dir_name,TRUE));        
+        if(strlen($dir_name) < strlen($base_path)) {
+            return redirect(base_url()."admin");            
         }        
-        $path = str_replace($base_path,"",$file_path);
-        log_message('debug','dirname : '.print_r(dirname($file_name),TRUE));
-        log_message('debug','base : '.print_r($base_path,TRUE));
-        log_message('debug','file : '.print_r($file_path,TRUE));
-        log_message('debug','path : '.print_r($path,TRUE));        
-        $data['path'] = $path.'/';        
-        $data['files'] = $this->get_files($file_path);        
+
+        $data['path'] = $dir_name.'/';        
+        $data['files'] = $this->get_files($dir_name);        
         log_message('debug','files : '.print_r($data['files'],TRUE));
         $this->load->view('admin',$data);
     }
@@ -141,6 +145,9 @@ class Admin extends CI_Controller
         log_message('debug','post : '.print_r($this->input->post(),TRUE));
         $name = $this->input->post('name');
         $path = $this->input->post('path');
+        $base_path = realpath($this->config->item('content_base_path'));
+        log_message('debug','base_path : '.$base_path);  
+        $path = str_replace($base_path,"",$path);
         $menu_id = $this->input->post('menu_id');
         $data = array('name'=>$name,'path'=>$path,'menu_id'=>$menu_id,);
         $result = $this->subMenu_model->insert($data);

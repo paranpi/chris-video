@@ -19,10 +19,10 @@
 					<td>
 						<select class="board">
 							<option value="torrent_movie"<?php echo $board == "torrent_movie" ? "selected" : "" ?> >영화</option>
-							<option value="torrent_tv" <?php echo $board == "torrent_tv" ? "checked" : "" ?> >드라마</option>
+							<option value="torrent_tv" <?php echo $board == "torrent_tv" ? "selected" : "" ?> >드라마</option>
 							<option value="torrent_variety" <?php echo $board == "torrent_variety" ? "selected" : "" ?> >예능</option>
 							<option value="torrent_docu" <?php echo $board == "torrent_docu" ? "selected" : "" ?> >다큐/시사</option>
-							<option value="torrent_mid" <?php echo $board == "torrent_mid" ? "checked" : "" ?> >해외TV(미드)</option>
+							<option value="torrent_mid" <?php echo $board == "torrent_mid" ? "selected" : "" ?> >해외TV(미드)</option>
 							<option value="torrent_child" <?php echo $board == "torrent_child" ? "selected" : "" ?> >어린이</option>
 						</select>
 					</td>

@@ -24,7 +24,10 @@ class Downloaded_model extends CI_Model
     }
 
     public function delete() {        
-        $query = $this->db->query('DELETE FROM downloaded WHERE created < DATE_SUB(NOW(), INTERVAL 30 DAY)');
-        return $quer->result();
+        $result = $this->db->query('DELETE FROM downloaded WHERE created < DATE_SUB(NOW(), INTERVAL 30 DAY)');
+        if(!$result) {
+            return false;
+        }
+        return true;
     }
 }

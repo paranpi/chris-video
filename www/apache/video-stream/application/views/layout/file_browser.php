@@ -1,12 +1,8 @@
 <tr>
 	<td class="file-type"><?php echo $type?> </td>
-	<td>
-		<?php if($name == '.'){ ?>
-		<a href=""><?php echo $name?></a>
-		<?php } else if($name == "..") {?>
-		<a class="file-name" href="?dir=<?php echo dirname($name)?>"><?php echo $name?></a>
-		<?php } else if($type == "dir") {?>	
-		<a class="file-name" href="?dir=<?php echo $path.$name?>"><?php echo $name ?></a>
+	<td>		
+		<?php if($type == "dir") {?>	
+		<a class="file-name" href="?dir=<?php echo realpath($path.$name)?>"><?php echo $name ?></a>
 		<?php }else {?>
 		<span><?php echo $name ?></span>
 		<?php } ?>
