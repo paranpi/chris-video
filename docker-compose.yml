@@ -9,10 +9,9 @@ db:
     - "3306:3306"
 web:
   build: .
+  command: video-service
   volumes:
     - "./www:/var/www/html"
-    - "./Drama:/var/www/Drama"
-    - "./Fun:/var/www/Fun"
   links:
     - db
   ports:

@@ -48,9 +48,9 @@ class Main extends CI_Controller {
 		$data = array();
 		$data['menu_list'] = $this->menu_model->gets(array("publish"=>true));
 		log_message('debug','$menu_list : '.print_r($data['menu_list'],TRUE));
-		
-		if(!$id) {
-			$id = $data['menu_list'][0]['id'];
+
+		if(!$id && isset($data['menu_list'][0])) {
+            $id = $data['menu_list'][0]['id'];
 		}
 		$data['id'] = $id;		
 		$data['sidebar_menu_list'] = $this->subMenu_model->gets(array("menu_id"=>$id));

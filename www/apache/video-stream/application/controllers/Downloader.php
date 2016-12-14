@@ -55,22 +55,22 @@ class Downloader extends CI_Controller
         foreach ($download_list as $value) {            
             $item = $this->getFeedItem($value['filename'],$value['board']);
             log_message('debug','item : '.print_r($item->link,TRUE));
-            $path = realpath($this->config->item('content_base_path').'/'.$value['path']);
+            //$path = realpath($this->config->item('content_base_path').'/'.$value['path']);
             if(!$this->isDownloaded($item->title)) {                 
-                $start_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -a \'%s\'',$item->link[0]);                
+                $start_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -a \'%s\' -w \'%s\'',$item->link[0],$value['path']);
                 exec($start_cmd);
                 log_message("debug","start cmd : ".$start_cmd);
-                $tid_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -l | grep \'%s\' | awk \'{print $1}\'',$value['filename']);
+                /*$tid_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -l | grep \'%s\' | awk \'{print $1}\'',$value['filename']);
                 $tid = exec($tid_cmd);
                 log_message("debug","get tid cmd : ".$tid_cmd);
                 $move_cmd = sprintf('transmission-remote localhost -n wishbeen:ts0705 -t %s --move %s',$tid,$path);
                 log_message("debug","move cmd : ".$move_cmd);
-                exec($move_cmd);
+                exec($move_cmd);*/
                 $this->downloaded_model->insert(array("filename"=>$item->title[0]));
             }
 
-            $this->delete_files($path);
-            $this->delete_old_list();
+            //$this->delete_files($path);
+            //$this->delete_old_list();
         }
     }
 }
