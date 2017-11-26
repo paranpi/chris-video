@@ -20,8 +20,8 @@ class Admin extends CI_Controller
         /*if(!isset($this->session->userdata['logged_in'])) {
             return redirect('/login');
         }*/
-        $this->load->model('menu_model');
-        $this->load->model('subMenu_model');
+        // $this->load->model('menu_model');
+        // $this->load->model('subMenu_model');
         // $this->load->model('downloadList_model');
     }
 

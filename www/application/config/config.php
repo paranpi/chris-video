@@ -518,5 +518,5 @@ $config['proxy_ips'] = '';
 | Custom Config
 |--------------------------------------------------------------------------
  */
- $config['install_version'] = 1;
+ $config['install_version'] = 0;
  $config['content_base_path'] = 'video';
