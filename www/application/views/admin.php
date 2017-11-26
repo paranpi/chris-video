@@ -1,55 +1,55 @@
-<!DOCTYPE html>
-<html lang="ko">
-	<head>
-		<script src="<?php echo base_url()?>assets/js/helper.js"></script>
-		<script src="<?php echo base_url()?>assets/js/admin.js"></script>
-		<link href="<?php echo base_url()?>assets/css/admin.css" rel="stylesheet">
-		<title>관리페이지</title>
-	</head>
-	<body>
-		<div><a href="<?php echo base_url()?>admin/">HOME</a></div>
-		<div><a href="<?php echo base_url()?>logout/">LOGOUT</a></div>
-		<div id="browser-root" class="file-browser">
-			<h2>파일브라우저</h2>
-			<div id="cur-path"><?php echo $path?></div>
-			<table>
-				<thead>
-					<tr>
-						<th>타입</th>
-						<th>파일이름</th>
-						<th>메뉴</th>
-						<th>추가</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach($files as $file) {
-					$this->load->view('layout/file_browser',$file);
-				}
-				?>
-				</tbody>
-			</table>
-		</div>
-		<div class="top-menu">
-			<h2>메뉴</h2>
-			<div class="input-menu">
-			<input type="text" id="menu-value"> <button id="menu-add" onclick="addMenu()">추가</button>
-			</div>
-			<table>
-				<thead>
-					<tr>
-						<th class="row-id">ID</th>
-						<th class="row-name">이름</th>
-						<th class="row-display">표시</th>
-						<th class="row-delete">삭제</th>
-					</tr>
-				</thead>
-				<tbody id="menu-root">
-					<?php foreach ($menus as $menu) {
-						$this->load->view('layout/menu_list',$menu);
-					}
-					?>	
-				</tbody>
-			</table>
-		</div>
-	</body>
-</html>
+<?php $this -> load -> view('layout/header');?>
+<nav class="navbar navbar-default">
+    <div class='container'>
+        <p class="navbar-text">Admin</p>
+    </div>
+</nav>
+<div class="container admin">
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="rssKeyworld">RSS키워드</label>
+            <input type="text" class="form-control" id="rssKeyworld" placeholder="Example input">
+        </div>
+        <label class="mr-sm-2" for="pathSelect">다운로드</label>
+        <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="pathSelect">
+            <option selected>선택</option>
+            <option value="1">슬기로운깜빵생활</option>
+        </select>
+        <button id="addDownload" type="submit" class="btn btn-primary">추가</button>
+    </form>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>RSS키워드</th>
+                    <th>다운로드</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.container -->
+<script src="/assets/js/helper.js"></script>
+<script src="/assets/js/admin.js"></script>
+<?php $this -> load -> view('layout/footer');?>

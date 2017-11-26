@@ -15,10 +15,6 @@ class Login extends CI_Controller
         // Load url
         $this->load->helper('url');
 
-        if($this->config->item('install_version') < 1) {
-            return redirect('install');
-        }
-
         // Load database
         $this->load->model('user_model');
 
@@ -66,9 +62,9 @@ class Login extends CI_Controller
                 //TODO : redirect to admin page.
                 redirect('/admin');
             }else {
-                $this->load->view('login_form');
+                $data = array('error' => 'Invalid Password.');
+                $this->load->view('login_form', $data);
             }
-
         }
     }
     public function logout() {

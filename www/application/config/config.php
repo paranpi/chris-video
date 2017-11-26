@@ -101,7 +101,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -518,5 +518,5 @@ $config['proxy_ips'] = '';
 | Custom Config
 |--------------------------------------------------------------------------
  */
- $config['install_version'] = 0;
+ $config['install_version'] = 1;
  $config['content_base_path'] = 'video';

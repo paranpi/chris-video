@@ -71,19 +71,6 @@ class Main extends CI_Controller
         $sub_menu = $sidebar_menu[$sub_menu_id];
         $file_list = $this->file->get_files($sub_menu['path'].'/'.$sub_menu['name']);
         $data['file_list'] = $file_list;
-        //$this->subMenu_model->gets(array("menu_id"=>$id));
-        // $sub_menu = $this->get_sub_menu($sub_menu_id, $data['sidebar_menu_list']);
-        // if (!$sub_menu_id) {
-        //     $sub_menu_id = $sub_menu['id'];
-        // }
-        // $data['sub_menu_id'] = $sub_menu_id;
-        // log_message('debug', 'sub_menu : '.print_r($sub_menu, true));
-        // if ($sub_menu) {
-        //     $data['file_list'] = $this->get_mp4_files($sub_menu['path']);
-        // } else {
-        //     $data['file_list'] = array();
-        // }
-
         $this->load->view('main', $data);
     }
 }

@@ -6,14 +6,6 @@ class Admin extends CI_Controller
     {
         parent::__construct();
 
-        /*        // Load form helper library
-                $this->load->helper('form');
-
-                // Load form validation library
-                $this->load->library('form_validation');
-
-                */
-
         // Load url
         //$this->load->helper('url');
         // Load database
@@ -81,100 +73,10 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        // Show login page
-        $menus = $this->menu_model->getMenusWithSubmenu();
-        //$menus = $this->subMenu_model->getAll();
-        $data = array();
-        $data['menus'] = $this->make_menu_array($menus);
-        //$data['menus'] = $menus;
-        $base_path = realpath($this->config->item('content_base_path'));
-        log_message('debug', 'base_path : '.print_r($base_path, true));
-        $dir_name=$this->input->get('dir');
-        if (!$dir_name) {
-            $dir_name = $base_path;
-        } else {
-            $dir_name = realpath($dir_name);
-        }
-        log_message('debug', 'dir_name : '.print_r($dir_name, true));
-        if (strlen($dir_name) < strlen($base_path)) {
-            return redirect(base_url()."admin");
-        }
-
-        $data['path'] = $dir_name.'/';
-        $data['files'] = $this->get_files($dir_name);
-        log_message('debug', 'files : '.print_r($data['files'], true));
-        $this->load->view('admin', $data);
+        $this->load->view('admin');
     }
 
-    public function add_menu()
-    {
-        $_POST += json_decode(file_get_contents('php://input'), true);
-        log_message('debug', 'post : '.print_r($this->input->post(), true));
-        $name = $this->input->post('name');
-        $publish = $this->input->post('publish');
-        $data = array('name'=>$name,'publish'=>$publish);
-        $result = $this->menu_model->insert($data);
-
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
-    }
-
-    public function update_menu($id)
-    {
-        $put_data = json_decode(file_get_contents('php://input'), true);
-        log_message('debug', 'put : '.print_r($put_data, true));
-        $result = $this->menu_model->update(array("id"=>$id,"data"=>$put_data));
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
-    }
-
-
-    public function del_menu($id)
-    {
-        $result = $this->menu_model->delete(array("id"=>$id));
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
-    }
-
-    public function add_sub_menu()
-    {
-        $_POST += json_decode(file_get_contents('php://input'), true);
-        log_message('debug', 'post : '.print_r($this->input->post(), true));
-        $name = $this->input->post('name');
-        $path = $this->input->post('path');
-        $base_path = realpath($this->config->item('content_base_path'));
-        log_message('debug', 'base_path : '.$base_path);
-        $path = str_replace($base_path, "", $path);
-        $menu_id = $this->input->post('menu_id');
-        $data = array('name'=>$name,'path'=>$path,'menu_id'=>$menu_id,);
-        $result = $this->subMenu_model->insert($data);
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
-    }
-
-    public function del_sub_menu($id)
-    {
-        $result = $this->subMenu_model->delete(array("id"=>$id));
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
-    }
-
-    public function add_download_list()
+    public function add_download()
     {
         $_POST += json_decode(file_get_contents('php://input'), true);
         log_message('debug', 'post : '.print_r($this->input->post(), true));
@@ -193,7 +95,7 @@ class Admin extends CI_Controller
         }
     }
 
-    public function del_download_list()
+    public function del_download()
     {
         $path = $this->input->get('path');
         $result = $this->downloadList_model->delete(array("path"=>$path));
