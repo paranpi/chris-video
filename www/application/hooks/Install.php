@@ -39,7 +39,7 @@ class Install
 				`rss_keyword` varchar(255) NOT NULL UNIQUE KEY,
 				`destnation` varchar(255) NOT NULL UNIQUE KEY,
 				`created` datetime NOT NULL,
-				FOREIGN KEY (`userid`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+				FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
         );
     }

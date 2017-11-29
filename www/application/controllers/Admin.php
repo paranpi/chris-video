@@ -5,7 +5,8 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->library('file');
+        include APPPATH . 'third_party/TransmissionRPC.class.php';
         // Load url
         //$this->load->helper('url');
         // Load database
@@ -45,17 +46,18 @@ class Admin extends CI_Controller
         return $menus;
     }
 
-    private function get_files($dir="")
+    private function get_dirs()
     {
-        if (!$dir) {
-            $dir = $this->config->item('content_base_path');
+        $data = array();
+        $root_dirs = $this->file->get_files();
+        foreach ($root_dirs as $key => $value) {
+            array_push($data,$value);
+            log_message('debug', 'value : '.$value['name']);
+            $sub_dirs = $this->file->get_files($value['name']);
+            log_message('debug', '$sub_dirs : '.print_r($sub_dirs,true));
+            $data = array_merge($data,$sub_dirs);
         }
-        $files = array();
-        $file_names = scandir($dir);
-        foreach ($file_names as $file) {
-            array_push($files, array("type" => filetype($dir.'/'.$file),"name"=>$file));
-        }
-        return $files;
+        return $data;
     }
 
     private function response($status=true, $data="")
@@ -73,7 +75,9 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $this->load->view('admin');
+        $data = array();
+        $data['destinations'] = $this->get_dirs();
+        $this->load->view('admin', $data);
     }
 
     public function add_download()

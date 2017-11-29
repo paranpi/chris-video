@@ -13,7 +13,11 @@
         <label class="mr-sm-2" for="pathSelect">다운로드</label>
         <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="pathSelect">
             <option selected>선택</option>
-            <option value="1">슬기로운깜빵생활</option>
+            <?php foreach($destinations as $dir) { ?>
+                <?php $destnation = $dir['path'] !== '' ? $dir['path'].'/'.$dir['name'] : ''; ?>
+                <option value="<?php echo $destnation  ?>"><?php echo $dir['name'] ?></option>
+    		<?php }?>
+
         </select>
         <button id="addDownload" type="submit" class="btn btn-primary">추가</button>
     </form>
