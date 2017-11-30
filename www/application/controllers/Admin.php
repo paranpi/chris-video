@@ -5,47 +5,14 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('form');
         $this->load->library('file');
         include APPPATH . 'third_party/TransmissionRPC.class.php';
-        // Load url
-        //$this->load->helper('url');
-        // Load database
-        /*if(!isset($this->session->userdata['logged_in'])) {
+        $this->load->model('download_model');
+        if($this->session->userdata('logged_in') === null) {
             return redirect('/login');
-        }*/
-        // $this->load->model('menu_model');
-        // $this->load->model('subMenu_model');
-        // $this->load->model('downloadList_model');
-    }
-
-    private function make_menu_array($menu_list = array())
-    {
-        $menus = array();
-
-        foreach ($menu_list as $item) {
-            if (!isset($menus[$item['id']])) {
-                $menus[$item['id']] = array(
-                    "id"=>$item['id'],
-                    "name"=>$item['name'],
-                    "publish"=>$item['publish'],
-                    "sub_menus"=>array()
-                    );
-            }
-            if ($item['sub_menu_id']) {
-                $sub_menu_list = array(
-                "id"=>$item['sub_menu_id'],
-                "name"=>$item['sub_menu_name'],
-                "path"=>$item['sub_menu_path'],
-                "filename"=>$item['filename'],
-                "board"=>$item['board'],
-                );
-                array_push($menus[$item['id']]['sub_menus'], $sub_menu_list);
-            }
         }
-        log_message('debug', 'menus : '.print_r($menus, true));
-        return $menus;
     }
-
     private function get_dirs()
     {
         $data = array();
@@ -77,32 +44,28 @@ class Admin extends CI_Controller
     {
         $data = array();
         $data['destinations'] = $this->get_dirs();
+        $data['downloadList'] = $this->download_model->get_all();
         $this->load->view('admin', $data);
     }
 
-    public function add_download()
+    public function add_download_list()
     {
-        $_POST += json_decode(file_get_contents('php://input'), true);
-        log_message('debug', 'post : '.print_r($this->input->post(), true));
-        $filename = $this->input->post('filename');
-        $path = $this->input->post('path');
-        $board = $this->input->post('board');
-        if (!$path || !$filename || !$board) {
-            return $this->response(true, "입력값을 확인하세요.");
+        // $_POST += json_decode(file_get_contents('php://input'), true);
+        if($this->session->userdata('logged_in') === null) {
+            return redirect('/login');
         }
-        $data = array('filename'=>$filename,'path'=>$path,'board'=>$board);
-        $result = $this->downloadList_model->insert($data);
-        if ($result) {
-            $this->response(true);
-        } else {
-            $this->response(false, json_encode($this->db->error()));
-        }
+        $data = $this->security->xss_clean($this->input->post());
+        log_message('debug', 'me : '.print_r($this->session->userdata('me'), true));
+
+        $data['userId'] = $this->session->userdata('me')['id'];
+        log_message('debug', 'post : '.print_r($data, true));
+        $result = $this->download_model->insert($data);
+        return redirect('/admin');
     }
 
-    public function del_download()
+    public function del_download_list($id)
     {
-        $path = $this->input->get('path');
-        $result = $this->downloadList_model->delete(array("path"=>$path));
+        $result = $this->download_model->delete($id);
         if ($result) {
             $this->response(true);
         } else {

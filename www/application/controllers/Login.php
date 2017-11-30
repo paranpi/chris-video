@@ -56,10 +56,14 @@ class Login extends CI_Controller
             $this->load->view('login_form');
         } else {
             $user = $this->user_model->get(array("email"=>$this->input->post('email')));
+            log_message('debug', 'user : '.print_r($user,true));
             if(isset($user) && password_verify($this->input->post('password'),$user->password))
             {
+                $this->session->set_userdata('me', array(
+                    'id' => $user->id,
+                    'email' => $user->email
+                ));
                 $this->session->set_userdata('logged_in', true);
-                //TODO : redirect to admin page.
                 redirect('/admin');
             }else {
                 $data = array('error' => 'Invalid Password.');
@@ -69,6 +73,7 @@ class Login extends CI_Controller
     }
     public function logout() {
         $this->session->unset_userdata('logged_in');
+        $this->session->unset_userdata('me');
         redirect('/');
     }
 }
