@@ -12,14 +12,14 @@ class Downloaded_model extends CI_Model
     {
         log_message('debug','insert : '.print_r($data,TRUE));
     	$this->db->set('download_list_id', $data['downloadListId']);
-        $this->db->set('margnet', $data['margnet']);
+        $this->db->set('magnet', $data['magnet']);
         $this->db->set('created', 'NOW()', false);
         return $this->db->insert('downloaded');
     }
 
     public function get($options = array()) {
-        $this->db->select('margnet');
-        $this->db->where('margnet',$options['margnet']);
+        $this->db->select('magnet');
+        $this->db->where('magnet',$options['magnet']);
         $query = $this->db->get('downloaded');
         return $query->result();
     }
