@@ -1,4 +1,4 @@
 www/usr/
 www/video/
-www/application/logs
+www/application/logs/
 .DS_Store

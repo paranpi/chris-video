@@ -59,7 +59,6 @@ class Downloader extends CI_Controller
         $username = 'paranpi';
         $password = '123456a';
         $rpc = new TransmissionRPC($url, $username, $password);
-        echo $rpc_param['magnet'];
         $result = $rpc->add( (string) $rpc_param['magnet'], $rpc_param['destination'] ); // Magic happens here :)
         print "[{$result->result}]";
         print "\n";
@@ -73,14 +72,14 @@ class Downloader extends CI_Controller
         }
         foreach ($download_list as $download) {
             $torrent = $this->get_torrent_info($download);
-            // if($this->isDownloaded($torrent['magnet'])) {
-            //     continue;
-            // }
-            // $this->downloaded_model->insert(array(
-            //     'downloadListId' => $download['id'],
-            //     'title' => $torrent['title'],
-            //     'magnet' => $torrent['magnet']
-            // ));
+            if($this->isDownloaded($torrent['magnet'])) {
+                continue;
+            }
+            $this->downloaded_model->insert(array(
+                'downloadListId' => $download['id'],
+                'title' => $torrent['title'],
+                'magnet' => $torrent['magnet']
+            ));
             $this->add_torrent(array (
                 'destination' => $download['destination'],
                 'magnet' => $torrent['magnet']
