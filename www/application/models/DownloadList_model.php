@@ -1,6 +1,6 @@
 <?php
 
-class Download_model extends CI_Model
+class Downloadlist_model extends CI_Model
 {
     public function __construct()
     {
@@ -14,20 +14,21 @@ class Download_model extends CI_Model
         log_message('debug', 'insert : '.print_r($data, true));
         $this->db->set('user_id', $data['userId']);
         $this->db->set('rss_keyword', $data['rssKeyword']);
+        $this->db->set('board_id', $data['boardId']);
         $this->db->set('destination', $data['destination']);
         $this->db->set('created', 'NOW()', false);
-        return $this->db->insert('download');
+        return $this->db->insert('download_list');
     }
 
     public function get_all()
     {
-        $query = $this->db->get('download');
+        $query = $this->db->get('download_list');
         return $query->result_array();
     }
 
     public function delete($id)
     {
-        $query = $this->db->delete('download', array('id' => $id));
+        $query = $this->db->delete('download_list', array('id' => $id));
         return $query;
     }
 }

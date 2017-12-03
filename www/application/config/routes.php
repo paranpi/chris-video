@@ -53,6 +53,7 @@ $route['default_controller'] = 'main';
 $route['install']['get'] = 'install';
 $route['admin/downloadList']['post'] = 'admin/add_download_list';
 $route['admin/downloadList/(:num)']['delete'] = 'admin/del_download_list/$1';
+$route['download']['get'] = 'downloader/download';
 $route['admin'] = 'admin/index';
 $route['login']['get'] = 'login';
 $route['login']['post'] = 'login/authentication';

@@ -7,8 +7,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->helper('form');
         $this->load->library('file');
-        include APPPATH . 'third_party/TransmissionRPC.class.php';
-        $this->load->model('download_model');
+        $this->load->model('downloadlist_model');
         if($this->session->userdata('logged_in') === null) {
             return redirect('/login');
         }
@@ -44,7 +43,14 @@ class Admin extends CI_Controller
     {
         $data = array();
         $data['destinations'] = $this->get_dirs();
-        $data['downloadList'] = $this->download_model->get_all();
+        $data['download_list'] = $this->downloadlist_model->get_all();
+        $data['board_list'] = array(
+            'tmovie' => '영화',
+            'tdrama' => '드라마',
+            'tent' => '예능',
+            'tv' => 'TV프로',
+            'tani' => '애니메이션'
+        );
         $this->load->view('admin', $data);
     }
 
@@ -59,13 +65,13 @@ class Admin extends CI_Controller
 
         $data['userId'] = $this->session->userdata('me')['id'];
         log_message('debug', 'post : '.print_r($data, true));
-        $result = $this->download_model->insert($data);
+        $result = $this->downloadlist_model->insert($data);
         return redirect('/admin');
     }
 
     public function del_download_list($id)
     {
-        $result = $this->download_model->delete($id);
+        $result = $this->downloadlist_model->delete($id);
         if ($result) {
             $this->response(true);
         } else {

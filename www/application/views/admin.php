@@ -20,8 +20,13 @@
                 <option value="<?php echo $dir['path'].'/'.$dir['name'] ?>"><?php echo $dir['name']?></option>
             <?php }?>
 		<?php }?>
-
         </select>
+        <select name="boardId" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="boardId">
+            <?php foreach ($board_list as $key => $value) { ?>
+                <option value="<?php echo $key?>"><?php echo $value?></option>
+            <?php }?>
+        </select>
+
         <button id="addDownload" type="submit" class="btn btn-primary">추가</button>
     <?php echo form_close(); ?>
     <div>
@@ -31,15 +36,17 @@
                     <th>#</th>
                     <th>RSS키워드</th>
                     <th>다운로드</th>
+                    <th>카테고리</th>
                     <th>삭제</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($downloadList as $key => $value) { ?>
+                <?php foreach ($download_list as $key => $value) { ?>
                     <tr>
                         <th scope="row"> <?php echo ($key+1) ?></th>
                         <td><?php echo $value['rss_keyword']?></td>
                         <td><?php echo $value['destination']?></td>
+                        <td><?php echo $board_list[$value['board_id']]?></td>
                         <td><button onclick="Admin.delDownload(this, <?php echo $value['id']?>)"></button></td>
                     </tr>
                 <?php }?>

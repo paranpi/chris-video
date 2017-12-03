@@ -33,15 +33,28 @@ class Install
         );
         // 다운로드 리스트 테이블생성.
         $this->CI->db->query(
-            'CREATE TABLE IF NOT EXISTS `download` (
+            'CREATE TABLE IF NOT EXISTS `download_list` (
 				`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				`user_id` int(11) NOT NULL,
 				`rss_keyword` varchar(255) NOT NULL UNIQUE KEY,
 				`destination` varchar(255) NOT NULL UNIQUE KEY,
+                `board_id` varchar(255) NOT NULL,
 				`created` datetime NOT NULL,
 				FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
         );
+        //다운로드완료 테이블생성
+        $this->CI->db->query(
+            'CREATE TABLE IF NOT EXISTS `downloaded` (
+				`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				`download_list_id` int(11) NOT NULL,
+                `title` varchar(255) NOT NULL UNIQUE KEY,
+				`magnet` varchar(255) NOT NULL UNIQUE KEY,
+				`created` datetime NOT NULL,
+				FOREIGN KEY (`download_list_id`) REFERENCES `download_list`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+        );
+
         $user = array(
             'email'    => 'admin@iptime.co.kr',
             'password' => password_hash('00000000', PASSWORD_BCRYPT)
