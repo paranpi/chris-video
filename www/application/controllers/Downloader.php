@@ -11,6 +11,18 @@ class Downloader extends CI_Controller
         $this->load->model('downloadlist_model');
         $this->load->model('downloaded_model');
     }
+    private function response($status=true, $data="")
+    {
+        $this->output->set_content_type('application/json');
+        if ($status) {
+            $status_msg = "SUCCESS";
+        } else {
+            $status_msg = "ERROR";
+            $this->output->set_status_header(400);
+        }
+        $response_data = array("status"=>$status_msg,"data"=>$data);
+        $this->output->set_output(json_encode($response_data));
+    }
     private function get_magnet_link($url) {
         $html = file_get_html($this->tfreeca_url.'/'.$url);
         $magnet = $html->find('div.torrent_magnet a', 0);
@@ -55,7 +67,7 @@ class Downloader extends CI_Controller
         return $result;
     }
     private function add_torrent($rpc_param) {
-        $url = 'http://paranpi.ipdisk.co.kr:9091/transmission/rpc';
+        $url = 'http://localhost:9091/transmission/rpc';
         $username = 'paranpi';
         $password = '123456a';
         $rpc = new TransmissionRPC($url, $username, $password);
@@ -85,5 +97,21 @@ class Downloader extends CI_Controller
                 'magnet' => $torrent['magnet']
             ));
         }
+    }
+    public function start() {
+        $cmd = "sed -i -e '/^0.*download/d' -e '2s/$/\\n0\t*/1\t*\t*\t*\t\/usr\/bin\/wget \"http\:\/\/localhost\:8000\/download\"/' /etc/crontab";
+        exec($cmd,$output,$ret);
+        if($ret > 0) {
+            return $this->reponse(FALSE, json_encode('Execution Fail!'));
+        }
+        $this->response(TRUE,json_encode($output));
+    }
+    public function stop() {
+        $cmd = "sed -i -e '/^0.*download/d' /etc/crontab";
+        exec($cmd,$output,$ret);
+        if($ret > 0) {
+            return $this->reponse(FALSE, json_encode('Execution Fail!'));
+        }
+        $this->response(TRUE,json_encode($output));
     }
 }

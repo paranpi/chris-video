@@ -69,6 +69,7 @@ class Install
             return;
         }
         $this->init_db();
+        exec('cp /etc/crontab .');
         $this->update_config();
     }
 }

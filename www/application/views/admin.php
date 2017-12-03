@@ -28,6 +28,8 @@
         </select>
 
         <button id="addDownload" type="submit" class="btn btn-primary">추가</button>
+        <button class="btn btn-success" onclick="Admin.startAutoDownload(event)">자동다운로드 시작</button>
+        <button class="btn btn-danger" onclick="Admin.stopAutoDownload(event)">자동다운로드 정지</button>
     <?php echo form_close(); ?>
     <div>
         <table class="table table-striped">

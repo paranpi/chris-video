@@ -26,5 +26,31 @@ window.Admin = (function (Admin) {
 			}
 		});
 	}
+	Admin.startAutoDownload = function (event) {
+		event.preventDefault();
+		httpUtil.post({url:"downloader/start"},function (err,response) {
+			if(err) {
+				alert(JSON.stringify(err));
+				return;
+			}
+			if(response.status == "SUCCESS") {
+				console.log('response',response);
+				alert('자동다운로드시작!')
+			}
+		});
+	}
+	Admin.stopAutoDownload = function (event) {
+		event.preventDefault();
+		httpUtil.post({url:"downloader/stop"},function (err,response) {
+			if(err) {
+				alert(JSON.stringify(err));
+				return;
+			}
+			if(response.status == "SUCCESS") {
+				console.log('response',response);
+				alert('자동다운로드정지!')
+			}
+		});
+	}
 	return Admin;
 })(window.Admin || {})
