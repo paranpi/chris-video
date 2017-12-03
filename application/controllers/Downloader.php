@@ -77,6 +77,7 @@ class Downloader extends CI_Controller
     }
     public function download()
     {
+        $base_path = $this->CI->config->item('content_base_path');
         $download_list = $this->downloadlist_model->get_all();
         if ( count( $download_list ) < 1 ) {
             echo 'empty download list';
@@ -93,7 +94,7 @@ class Downloader extends CI_Controller
                 'magnet' => $torrent['magnet']
             ));
             $this->add_torrent(array (
-                'destination' => $download['destination'],
+                'destination' => $base_path.'/'.$download['destination'],
                 'magnet' => $torrent['magnet']
             ));
         }
