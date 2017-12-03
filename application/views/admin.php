@@ -54,6 +54,10 @@
                 <?php }?>
             </tbody>
         </table>
+        <!-- <?php
+            $output = shell_exec("cat /etc/crontab");
+            echo "<pre>$output</pre>";
+        ?> -->
     </div>
 </div><!-- /.container -->
 <script src="/assets/js/helper.js"></script>

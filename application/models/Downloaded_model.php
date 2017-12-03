@@ -12,6 +12,7 @@ class Downloaded_model extends CI_Model
     {
         log_message('debug','insert : '.print_r($data,TRUE));
     	$this->db->set('download_list_id', $data['downloadListId']);
+        $this->db->set('title', $data['title']);
         $this->db->set('magnet', $data['magnet']);
         $this->db->set('created', 'NOW()', false);
         return $this->db->insert('downloaded');
