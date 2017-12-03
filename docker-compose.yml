@@ -7,7 +7,7 @@ db:
 apache:
   build: .
   volumes:
-      - ./www:/var/www/html
+      - .:/var/www/html
   links:
       - db
   ports:

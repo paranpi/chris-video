@@ -1,4 +1,4 @@
 .DS_Store
-www/application/logs/
-www/system/sessions/
-www/usr/
+application/logs/
+system/sessions/
+usr/
