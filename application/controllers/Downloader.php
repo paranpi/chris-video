@@ -100,7 +100,7 @@ class Downloader extends CI_Controller
         }
     }
     public function start() {
-        $cmd = "sed -i -e '/^0.*downloader/d' -e '2s/$/\\n0\t*\/1\t*\t*\t*\t\/usr\/bin\/wget -O- http:\/\/paranpi.ipdisk.co.kr\:8000\/downloader/' /etc/crontab";
+        $cmd = "sed -i -e '/^0.*downloader/d' -e '2s/$/\\n01\t*\t*\t*\t*\t\/usr\/bin\/wget -O- http:\/\/paranpi.ipdisk.co.kr\:8000\/downloader/' /etc/crontab";
         exec($cmd,$output,$ret);
         if($ret > 0) {
             return $this->reponse(FALSE, json_encode('Execution Fail!'));
