@@ -77,7 +77,7 @@ class Downloader extends CI_Controller
     }
     public function download()
     {
-        $base_path = $this->CI->config->item('content_base_path');
+        $base_path = $this->config->item('content_base_path');
         $download_list = $this->downloadlist_model->get_all();
         if ( count( $download_list ) < 1 ) {
             echo 'empty download list';
@@ -100,7 +100,7 @@ class Downloader extends CI_Controller
         }
     }
     public function start() {
-        $cmd = "sed -i -e '/^0.*downloader/d' -e '2s/$/\\n0\t*\/1\t*\t*\t*\t\/usr\/bin\/wget \"http\:\/\/localhost\:8000\/downloader\"/' /etc/crontab";
+        $cmd = "sed -i -e '/^0.*downloader/d' -e '2s/$/\\n0\t*\/1\t*\t*\t*\t\/usr\/bin\/wget -O- http:\/\/paranpi.ipdisk.co.kr\:8000\/downloader/' /etc/crontab";
         exec($cmd,$output,$ret);
         if($ret > 0) {
             return $this->reponse(FALSE, json_encode('Execution Fail!'));
