@@ -31,7 +31,7 @@ class Downloader extends CI_Controller
         }
         return "";
     }
-    private function get_torrent_info($download_info) {
+    private function get_torrent_info($download_info, $resolusion = "720p") {
         $sc=str_replace(" ","+",$download_info['rss_keyword']);
         $b_id= $download_info['board_id'];
         $page= 1;
@@ -42,7 +42,7 @@ class Downloader extends CI_Controller
         // Find all links
         foreach($html->find('div.list_subject') as $element) {
             $atag = $element->find('a', 1);
-            if($atag && strpos($atag->plaintext, '720p-NEXT')) {
+            if($atag && strpos($atag->plaintext, $resolusion.'-NEXT')) {
                 $title = $atag->plaintext;
                 $href = $atag->href;
                 // $href = $element->href;
@@ -71,13 +71,13 @@ class Downloader extends CI_Controller
         $username = 'paranpi';
         $password = '123456a';
         $rpc = new TransmissionRPC($url, $username, $password);
-        $result = $rpc->add( (string) $rpc_param['magnet'], $rpc_param['destination'] ); // Magic happens here :)
+        $download_path = '/'.$this->config->item('content_base_path').'/'.$rpc_param['destination'];
+        $result = $rpc->add( (string) $rpc_param['magnet'], $download_path ); // Magic happens here :)
         print "[{$result->result}]";
         print "\n";
     }
     public function download()
     {
-        $base_path = $this->config->item('content_base_path');
         $download_list = $this->downloadlist_model->get_all();
         if ( count( $download_list ) < 1 ) {
             echo 'empty download list';
@@ -85,7 +85,10 @@ class Downloader extends CI_Controller
         }
         foreach ($download_list as $download) {
             $torrent = $this->get_torrent_info($download);
-            if($this->isDownloaded($torrent['magnet'])) {
+            if(!$torrent) {
+                $torrent = $this->get_torrent_info($download, "1080p");
+            }
+            if(!$torrent || $this->isDownloaded($torrent['magnet'])) {
                 continue;
             }
             $this->downloaded_model->insert(array(
@@ -93,26 +96,26 @@ class Downloader extends CI_Controller
                 'title' => $torrent['title'],
                 'magnet' => $torrent['magnet']
             ));
+
             $this->add_torrent(array (
-                'destination' => $base_path.'/'.$download['destination'],
+                'destination' => $download['destination'],
                 'magnet' => $torrent['magnet']
             ));
         }
     }
-    public function start() {
-        $cmd = "sed -i -e '/^0.*downloader/d' -e '2s/$/\\n01\t*\t*\t*\t*\t\/usr\/bin\/wget -O- http:\/\/paranpi.ipdisk.co.kr\:8000\/downloader/' /etc/crontab";
-        exec($cmd,$output,$ret);
-        if($ret > 0) {
-            return $this->reponse(FALSE, json_encode('Execution Fail!'));
+    public function crond_script($cmd) {
+        if($cmd === "start") {
+            $crontab_cmd = 'echo "01 * * * * /usr/bin/wget -O- http://paranpi.ipdisk.co.kr/downloader/" | crontab -';
+        }else {
+            $crontab_cmd = "crontab -d";
         }
-        $this->response(TRUE,json_encode($output));
-    }
-    public function stop() {
-        $cmd = "sed -i -e '/^0.*downloader/d' /etc/crontab";
-        exec($cmd,$output,$ret);
+        exec($crontab_cmd,$output,$ret);
         if($ret > 0) {
-            return $this->reponse(FALSE, json_encode('Execution Fail!'));
+            return $this->reponse(FALSE,'Execution Fail!');
         }
-        $this->response(TRUE,json_encode($output));
+        $crond_cmd_script = "/etc/rc.d/S90crond.sh";
+        exec($crond_cmd_script.' stop',$output,$ret);
+        exec($crond_cmd_script.' start',$output,$ret);
+        $this->response(TRUE,$output);
     }
 }

@@ -26,6 +26,20 @@ window.Admin = (function (Admin) {
 			}
 		});
 	}
+	Admin.delDownloaded = function (evt,id) {
+		var button = evt;
+		httpUtil.del({url:"admin/downloaded/" + id},function (err,response) {
+			if(err) {
+				alert(JSON.stringify(err));
+				return;
+			}
+			if(response.status == "SUCCESS") {
+				var tbody = button.parentNode.parentNode.parentNode;
+				var tr = button.parentNode.parentNode;
+				tbody.removeChild(tr);
+			}
+		});
+	}
 	Admin.startAutoDownload = function (event) {
 		event.preventDefault();
 		httpUtil.post({url:"downloader/start"},function (err,response) {

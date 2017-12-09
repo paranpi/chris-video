@@ -16,7 +16,7 @@ class File
         $files = array();
         $file_names = scandir($search_path);
         foreach ($file_names as $file) {
-            if($ignore_parent && strcmp($file, '.') === 0 || strcmp($file, '..') === 0) {
+            if($ignore_parent && strpos($file, '.') !== false) {
                 continue;
             }
             if($ext !== "") {

@@ -527,7 +527,7 @@ class TransmissionRPC
       "arguments" => $arguments
     );
     $data = json_encode( $data );
-    
+
     // performs the HTTP POST
     $contextopts = $this->default_context_opts;	// Start with the defaults
     $contextopts['http']['method'] = 'POST';

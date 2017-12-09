@@ -8,6 +8,7 @@ class Admin extends CI_Controller
         $this->load->helper('form');
         $this->load->library('file');
         $this->load->model('downloadlist_model');
+        $this->load->model('downloaded_model');
         if($this->session->userdata('logged_in') === null) {
             return redirect('/login');
         }
@@ -44,6 +45,7 @@ class Admin extends CI_Controller
         $data = array();
         $data['destinations'] = $this->get_dirs();
         $data['download_list'] = $this->downloadlist_model->get_all();
+        $data['downloaded_list'] = $this->downloaded_model->get_all();
         $data['board_list'] = array(
             'tmovie' => '영화',
             'tdrama' => '드라마',
@@ -72,6 +74,16 @@ class Admin extends CI_Controller
     public function del_download_list($id)
     {
         $result = $this->downloadlist_model->delete($id);
+        if ($result) {
+            $this->response(true);
+        } else {
+            $this->response(false, json_encode($this->db->error()));
+        }
+    }
+
+    public function del_downloaded($id)
+    {
+        $result = $this->downloaded_model->delete($id);
         if ($result) {
             $this->response(true);
         } else {

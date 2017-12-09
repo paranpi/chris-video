@@ -14,10 +14,16 @@
 			xhr.open('POST', params.url, true);
 			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 			xhr.onload = function () {
+				var result = '';
+				try {
+					result = JSON.parse(xhr.response)
+				}catch (e) {
+					result = xhr.response || e;
+				}
 				if(xhr.status == 200) {
-					callback(null,JSON.parse(xhr.response));
+					callback(null,result);
 				}else {
-					callback(JSON.parse(xhr.response));
+					callback(result);
 				}
 			}
 			xhr.send(JSON.stringify(params.data));
@@ -27,10 +33,16 @@
 
 			xhr.open('PUT', params.url, true);
 			xhr.onload = function () {
+				var result = '';
+				try {
+					result = JSON.parse(xhr.response)
+				} catch (e) {
+					result = xhr.response || e;
+				}
 				if(xhr.status == 200) {
-					callback(null,JSON.parse(xhr.response));
+					callback(null,result);
 				}else {
-					callback(JSON.parse(xhr.response));
+					callback(result);
 				}
 			}
 			xhr.send(JSON.stringify(params.data));
@@ -40,10 +52,16 @@
 
 			xhr.open('DELETE', params.url, true);
 			xhr.onload = function () {
+				var result = '';
+				try {
+					result = JSON.parse(xhr.response)
+				} catch (e) {
+					result = xhr.response || e;
+				}
 				if(xhr.status == 200) {
-					callback(null,JSON.parse(xhr.response));
+					callback(null,result);
 				}else {
-					callback(JSON.parse(xhr.response));
+					callback(result);
 				}
 			}
 			xhr.send(null);

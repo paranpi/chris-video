@@ -54,10 +54,31 @@
                 <?php }?>
             </tbody>
         </table>
-        <!-- <?php
-            $output = shell_exec("cat /etc/crontab");
-            echo "<pre>$output</pre>";
-        ?> -->
+    </div>
+    <div>
+        <div>
+            <h4>다운로드완료 목록</h3>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>타이틀</th>
+                    <th>날짜</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($downloaded_list as $key => $value) { ?>
+                    <tr>
+                        <th scope="row"> <?php echo ($key+1) ?></th>
+                        <td><?php echo $value['title']?></td>
+                        <td><?php echo $value['created']?></td>
+                        <td><button onclick="Admin.delDownloaded(this, <?php echo $value['id']?>)"></button></td>
+                    </tr>
+                <?php }?>
+            </tbody>
+        </table>
     </div>
 </div><!-- /.container -->
 <script src="/assets/js/helper.js"></script>
