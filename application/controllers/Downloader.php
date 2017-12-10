@@ -105,7 +105,7 @@ class Downloader extends CI_Controller
     }
     public function crond_script($cmd) {
         if($cmd === "start") {
-            $crontab_cmd = 'echo "01 * * * * /usr/bin/wget -O- http://paranpi.ipdisk.co.kr/downloader/" | crontab -';
+            $crontab_cmd = 'echo "01 * * * * /usr/bin/wget -O- http://paranpi.ipdisk.co.kr:8000/downloader/" | crontab -';
         }else {
             $crontab_cmd = "crontab -d";
         }

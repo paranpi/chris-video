@@ -26,6 +26,7 @@ class Downloaded_model extends CI_Model
     }
 
     public function get_all() {
+        $this->db->order_by("created", "asc");
         $query = $this->db->get('downloaded');
         return $query->result_array();
     }
