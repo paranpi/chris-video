@@ -14,7 +14,7 @@ class File
         $search_path = $base_path.'/'.$dir;
         log_message('debug', 'File :'.$search_path);
         $files = array();
-        $file_names = scandir($search_path);
+        $file_names = scandir($search_path,1);
         foreach ($file_names as $file) {
             if($ignore_parent && $file[0] === '.') {
                 continue;

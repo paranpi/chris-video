@@ -7,6 +7,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->helper('form');
         $this->load->library('file');
+        $this->load->library('pagination');
         $this->load->model('downloadlist_model');
         $this->load->model('downloaded_model');
         if($this->session->userdata('logged_in') === null) {
@@ -40,12 +41,11 @@ class Admin extends CI_Controller
         $this->output->set_output(json_encode($response_data));
     }
 
-    public function index()
+    public function index($page_num=1)
     {
         $data = array();
         $data['destinations'] = $this->get_dirs();
         $data['download_list'] = $this->downloadlist_model->get_all();
-        $data['downloaded_list'] = $this->downloaded_model->get_all();
         $data['board_list'] = array(
             'tmovie' => '영화',
             'tdrama' => '드라마',
@@ -80,7 +80,34 @@ class Admin extends CI_Controller
             $this->response(false, json_encode($this->db->error()));
         }
     }
+    public function get_downloaded($page_num = 1) {
+        if($page_num < 1) $page_num = 1;
+        $per_page = 10;
+        $options = array('limit' => $per_page, 'offset' => (($page_num-1) * $per_page) );
+        $downloaded = $this->downloaded_model->get_all($options);
+        $config['num_links'] = 5;
+        $config['use_page_numbers'] = TRUE;
+        $config['base_url'] = '/admin/downloaded';
+        $config['cur_tag_open'] = '<li class="page-item active"><a>';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['next_link'] = '»';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '«';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['per_page'] = $per_page;
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
+        $config['total_rows'] = $downloaded['count'];
 
+        $data['downloaded_list'] = $downloaded['rows'];
+        $data['start_num'] = ($page_num-1) * $per_page;
+        $this->pagination->initialize($config);
+        $this->load->view('downloaded', $data);
+    }
     public function del_downloaded($id)
     {
         $result = $this->downloaded_model->delete($id);

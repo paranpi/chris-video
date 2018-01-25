@@ -25,10 +25,13 @@ class Downloaded_model extends CI_Model
         return $query->result();
     }
 
-    public function get_all() {
-        $this->db->order_by("created", "asc");
-        $query = $this->db->get('downloaded');
-        return $query->result_array();
+    public function get_all($options = array("offset" => 0, "limit" => 10)) {
+        $result = array();
+        $result['count'] = $this->db->count_all_results('downloaded');
+        $this->db->order_by("created", "desc");
+        $query = $this->db->get('downloaded', $options['limit'], $options['offset']);
+        $result['rows'] = $query->result_array();
+        return $result;
     }
 
     public function delete($id)

@@ -1,8 +1,11 @@
 <?php $this -> load -> view('layout/header');?>
 <nav class="navbar navbar-default">
-    <div class='container'>
-        <p class="navbar-text">Admin</p>
-    </div>
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li class="active"><a>Home</a></li>
+      <li><a href="/admin/downloaded">Dwonloaded</a></li>
+    </ul>
+  </div>
 </nav>
 <div class="container admin">
     <?php echo form_open('admin/downloadList','class="form-inline" method="post" onsubmit="return Admin.validation();"', ''); ?>
@@ -50,31 +53,6 @@
                         <td><?php echo $value['destination']?></td>
                         <td><?php echo $board_list[$value['board_id']]?></td>
                         <td><button onclick="Admin.delDownload(this, <?php echo $value['id']?>)"></button></td>
-                    </tr>
-                <?php }?>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <div>
-            <h4>다운로드완료 목록</h3>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>타이틀</th>
-                    <th>날짜</th>
-                    <th>삭제</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($downloaded_list as $key => $value) { ?>
-                    <tr>
-                        <th scope="row"> <?php echo ($key+1) ?></th>
-                        <td><?php echo $value['title']?></td>
-                        <td><?php echo $value['created']?></td>
-                        <td><button onclick="Admin.delDownloaded(this, <?php echo $value['id']?>)"></button></td>
                     </tr>
                 <?php }?>
             </tbody>
