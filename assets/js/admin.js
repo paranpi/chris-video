@@ -14,7 +14,7 @@ window.Admin = (function (Admin) {
 	}
 	Admin.delDownload = function (evt,id) {
 		var button = evt;
-		httpUtil.del({url:"admin/downloadList/" + id},function (err,response) {
+		httpUtil.del({url:"/admin/downloadList/" + id},function (err,response) {
 			if(err) {
 				alert(JSON.stringify(err));
 				return;
@@ -28,7 +28,7 @@ window.Admin = (function (Admin) {
 	}
 	Admin.delDownloaded = function (evt,id) {
 		var button = evt;
-		httpUtil.del({url:"admin/downloaded/" + id},function (err,response) {
+		httpUtil.del({url:"/admin/downloaded/" + id},function (err,response) {
 			if(err) {
 				alert(JSON.stringify(err));
 				return;
@@ -42,7 +42,7 @@ window.Admin = (function (Admin) {
 	}
 	Admin.startAutoDownload = function (event) {
 		event.preventDefault();
-		httpUtil.post({url:"downloader/start"},function (err,response) {
+		httpUtil.post({url:"/downloader/start"},function (err,response) {
 			if(err) {
 				alert(JSON.stringify(err));
 				return;
@@ -55,7 +55,7 @@ window.Admin = (function (Admin) {
 	}
 	Admin.stopAutoDownload = function (event) {
 		event.preventDefault();
-		httpUtil.post({url:"downloader/stop"},function (err,response) {
+		httpUtil.post({url:"/downloader/stop"},function (err,response) {
 			if(err) {
 				alert(JSON.stringify(err));
 				return;
