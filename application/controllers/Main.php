@@ -30,7 +30,7 @@ class Main extends CI_Controller
         }
         $data['sub_menu_id'] = $sub_menu_id;
         $sub_menu = $sidebar_menu[$sub_menu_id];
-        $file_list = $this->file->get_files($sub_menu['path'].'/'.$sub_menu['name']);
+        $file_list = $this->file->get_files($sub_menu['path'].'/'.$sub_menu['name'],true,"","latest");
         $data['file_list'] = $file_list;
         $this->load->view('main', $data);
     }

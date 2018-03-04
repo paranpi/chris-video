@@ -1,4 +1,5 @@
 .DS_Store
 application/logs/
 system/sessions/
-usr/
+video/
+.idea/
