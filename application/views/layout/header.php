@@ -7,7 +7,7 @@
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="">
 		<meta name="author" content="">
-		<link rel="icon" href="/assets/favicon.ico">
+		<link rel="icon" href="/favicon.ico">
 		<title>IptimeVideo</title>
 		<link href="http://vjs.zencdn.net/5.11.7/video-js.css" rel="stylesheet">
 
