@@ -30,8 +30,18 @@ class Main extends CI_Controller
         }
         $data['sub_menu_id'] = $sub_menu_id;
         $sub_menu = $sidebar_menu[$sub_menu_id];
-        $file_list = $this->file->get_files($sub_menu['path'].'/'.$sub_menu['name'],true,"","latest");
-        $data['file_list'] = $file_list;
+        $files = $this->file->get_files($sub_menu['path'].'/'.$sub_menu['name'],true,"","latest");
+        // 토렌트 변경으로인해 디렉토리가 하나 더 생김.
+        // 2depth 까지 확인하도록 수정. 디렉토리 관리도 2단계까지가 적당함.
+        // directory 내에는 파일하나만 존재하도록한다.
+        $file_list = array_map(function ($value){
+            if($value['type'] == 'dir') {
+                $inner_files = $this->file->get_files($value['path'].'/'.$value['name'],true,"","latest");
+                return empty($inner_files) ? null: $inner_files[0];
+            }
+            return $value;
+        }, $files);
+        $data['file_list'] = array_filter($file_list);
         $this->load->view('main', $data);
     }
 }
