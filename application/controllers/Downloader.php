@@ -84,23 +84,27 @@ class Downloader extends CI_Controller
             return;
         }
         foreach ($download_list as $download) {
-            $torrent = $this->get_torrent_info($download);
-            if(!$torrent) {
-                $torrent = $this->get_torrent_info($download, "1080p");
-            }
-            if(!$torrent || $this->isDownloaded($torrent['magnet'])) {
-                continue;
-            }
-            $this->downloaded_model->insert(array(
-                'downloadListId' => $download['id'],
-                'title' => $torrent['title'],
-                'magnet' => $torrent['magnet']
-            ));
+            try {
+                $torrent = $this->get_torrent_info($download);
+                if(!$torrent) {
+                    $torrent = $this->get_torrent_info($download, "1080p");
+                }
+                if(!$torrent || $this->isDownloaded($torrent['magnet'])) {
+                    continue;
+                }
+                $this->downloaded_model->insert(array(
+                    'downloadListId' => $download['id'],
+                    'title' => $torrent['title'],
+                    'magnet' => $torrent['magnet']
+                ));
 
-            $this->add_torrent(array (
-                'destination' => $download['destination'],
-                'magnet' => $torrent['magnet']
-            ));
+                $this->add_torrent(array (
+                    'destination' => $download['destination'],
+                    'magnet' => $torrent['magnet']
+                ));
+            } catch (Exception $e) {
+                log_message('error', print_r($e,true));
+            }
         }
     }
     public function crond_script($cmd) {
