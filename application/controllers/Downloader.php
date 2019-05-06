@@ -47,7 +47,7 @@ class Downloader extends CI_Controller
                 $href = $atag->href;
                 // $href = $element->href;
                 parse_str($href, $output);
-                $iframe_url= 'torrent_info.php?bo_table='.$output['b_id'].'&wr_id='.$output['id'];
+                $iframe_url= 'info.php?bo_table='.$output['b_id'].'&wr_id='.$output['id'];
                 $magnet= $this->get_magnet_link($iframe_url);
                 return array(
                     'title' => $title,
